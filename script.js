@@ -1,11 +1,31 @@
-let myLibrary = ['boo', 'ree', 'yaa', 'yooo'];
 let bookContainer = document.getElementById("book-container");
+const newBookForm = document.getElementById("new-book-form");
+newBookForm.style.display = "none";
+let myLibrary = [];
 
-function Book() {
 
+
+function Book(author, title, pages, read) {
+  this.author = author;
+  this.title = title;
+  this.pages = pages;
+  this.read = read;
 }
 
-function addBookToLibrary(newBook) {
+function addBookToLibrary(e) {
+  let newBookAuthor = document.getElementById("new-book-author");
+  let newBookTitle = document.getElementById("new-book-title");
+  let newBookPages = document.getElementById("new-book-pages");
+  let newBookReadStatus = document.getElementById("new-book-read");
+  let newBook;
+  if(e.target.id === "add-book-btn") {
+    newBook = new Book(newBookAuthor.value, newBookTitle.value, newBookPages.value, newBookReadStatus.checked);
+    newBookAuthor.value = "";
+    newBookTitle.value = "";
+    newBookPages.value = "";
+    newBookReadStatus.checked = false;
+    newBookForm.style.display = "none";
+  }
   myLibrary.push(newBook);
   render();
 }
@@ -18,14 +38,27 @@ function render() {
   for(let book in myLibrary) {
     let div = document.createElement("div");
     let currentBook = div;
-    currentBook.textContent = myLibrary[book];
-    bookContainer.appendChild(currentBook);
+    for(let prop in myLibrary[book]) {
+      let p = document.createElement('p');
+      p.textContent = `${myLibrary[book][prop]}`;
+      currentBook.appendChild(p);
+    }
+      bookContainer.appendChild(currentBook);
   }
 }
 
+function showNewBookForm(e) {
+  newBookForm.style.display = "block";
+}
 
+document.addEventListener('click', e => {
+  if(e.target.id === "add-book-btn") {
+    addBookToLibrary(e);
+  }
 
-
-// document.addEventListener('click', e => {
-//   console.log(e);
-// })
+  if(e.target.id === "new-book-btn") {
+    showNewBookForm(e);
+  }
+  
+  console.log(e);
+})

@@ -1,19 +1,33 @@
 body {
   margin: 0;
   padding: 0;
+  width: 100%;
+}
+
+#new-book-form {
+  margin-top: 30px;
+  text-align: center;
+}
+
+#add-book-btn {
+  margin-top: 20px;
 }
 
 #book-container {
-
+  margin-top: 100px;  
 }
 
-#book-container div {
+#book-container >  div {
   display: grid;
+  justify-content: center;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   width: 100%;
-  padding: 10px 30px;
 }
 
 #book-container div:nth-child(even) {
   background-color: #eee;
+}
+
+#book-container p {
+  padding: 0 50px;
 }
