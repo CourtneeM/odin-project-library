@@ -4,17 +4,16 @@ body {
 }
 
 #book-container {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  max-width: 1000px;
-  height: 100vh;
-  margin: 0 auto;
+
 }
 
 #book-container div {
-  width: 300px;
-  height: 300px;
-  text-align: center;
-  border: 1px solid #000;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  width: 100%;
+  padding: 10px 30px;
+}
+
+#book-container div:nth-child(even) {
+  background-color: #eee;
 }
