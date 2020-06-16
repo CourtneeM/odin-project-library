@@ -5,11 +5,12 @@ let myLibrary = [];
 
 
 
-function Book(author, title, pages, read) {
+function Book(author, title, pages, read, id) {
   this.author = author;
   this.title = title;
   this.pages = pages;
   this.read = read;
+  this.id = id;
 }
 
 function addBookToLibrary(e) {
@@ -19,7 +20,7 @@ function addBookToLibrary(e) {
   let newBookReadStatus = document.getElementById("new-book-read");
   let newBook;
   if(e.target.id === "add-book-btn") {
-    newBook = new Book(newBookAuthor.value, newBookTitle.value, newBookPages.value, newBookReadStatus.checked);
+    newBook = new Book(newBookAuthor.value, newBookTitle.value, newBookPages.value, newBookReadStatus.checked, (myLibrary.length));
     newBookAuthor.value = "";
     newBookTitle.value = "";
     newBookPages.value = "";
@@ -27,6 +28,22 @@ function addBookToLibrary(e) {
     newBookForm.style.display = "none";
   }
   myLibrary.push(newBook);
+  render();
+}
+
+function updateBookId() {
+  for(let book in myLibrary) {
+    for(let prop in myLibrary[book]) {
+      if(prop === "id") {
+        myLibrary[book][prop] = book;
+      }
+    }
+  }
+}
+
+function removeBook(e) {
+  myLibrary.splice(e.target.parentElement.id, 1);
+  updateBookId();
   render();
 }
 
@@ -39,17 +56,25 @@ function render() {
     let div = document.createElement("div");
     let currentBook = div;
     for(let prop in myLibrary[book]) {
-      let p = document.createElement('p');
-      p.textContent = `${myLibrary[book][prop]}`;
-      currentBook.appendChild(p);
+      if(prop !== "id") { 
+        let p = document.createElement('p');
+        p.textContent = `${myLibrary[book][prop]}`;
+        currentBook.appendChild(p);
+      }
+      if(prop === "id") {
+        currentBook.id = myLibrary[book][prop];
+      }
     }
+      let p = document.createElement("p");
+      p.textContent = "Remove Book";
+      p.id = "remove-book-btn";
+      p.style.backgroundColor = "red";
+      p.style.color = "white";
+      currentBook.appendChild(p);
       bookContainer.appendChild(currentBook);
   }
 }
 
-function showNewBookForm(e) {
-  newBookForm.style.display = "block";
-}
 
 document.addEventListener('click', e => {
   if(e.target.id === "add-book-btn") {
@@ -57,7 +82,17 @@ document.addEventListener('click', e => {
   }
 
   if(e.target.id === "new-book-btn") {
-    showNewBookForm(e);
+    newBookForm.style.display = "block";
+  }
+  
+  if(e.target.id === "remove-book-btn") {
+    removeBook(e);
+  }
+
+  if(e.target.textContent === "true") {
+    e.target.textContent = "false";
+  } else if(e.target.textContent === "false") {
+    e.target.textContent = "true";
   }
   
   console.log(e);
