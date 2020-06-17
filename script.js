@@ -1,5 +1,6 @@
 let bookContainer = document.getElementById("book-container");
 const newBookForm = document.getElementById("new-book-form");
+const newBookBtn = document.getElementById("new-book-btn");
 newBookForm.style.display = "none";
 let myLibrary = [];
 
@@ -44,14 +45,11 @@ let bookActions = {
     render();
   },
   toggleReadStatus: function(e) {
-    for(let book in myLibrary) {
-      for(let prop in myLibrary[book]) {
-        if(myLibrary[e.target.parentElement.id][prop] === true) {
-          myLibrary[e.target.parentElement.id][prop] = false;
-        } else if(myLibrary[e.target.parentElement.id][prop] === false) {
-          myLibrary[e.target.parentElement.id][prop] = true;
-        }
-      }
+    let currentBookIndex = +(e.target.parentElement.id);
+    if(myLibrary[currentBookIndex].read === true) {
+      myLibrary[currentBookIndex].read = false;
+    } else if(myLibrary[currentBookIndex].read === false) {
+      myLibrary[currentBookIndex].read = true;
     }
     render();
   }
@@ -97,10 +95,12 @@ function render() {
 document.addEventListener('click', e => {
   if(e.target.id === "add-book-btn") {
     bookActions.addBookToLibrary(e);
+    newBookBtn.style.display = "block";
   }
 
   if(e.target.id === "new-book-btn") {
     newBookForm.style.display = "block";
+    newBookBtn.style.display = "none";
   }
   
   if(e.target.id === "remove-book-btn") {
@@ -110,6 +110,5 @@ document.addEventListener('click', e => {
   if(e.target.textContent === "Read" || e.target.textContent === "Not Read") {
     bookActions.toggleReadStatus(e);
   }
-  
-  console.log(e);
+  console.log(myLibrary);
 })

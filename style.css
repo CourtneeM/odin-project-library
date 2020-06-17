@@ -25,10 +25,19 @@ body {
   text-align: center;
 }
 
-#book-container div:nth-child(even) {
+#book-container div:nth-child(odd) {
   background-color: #eee;
 }
 
 #book-container p {
   padding: 10px 50px;
+}
+
+#new-book-btn {
+  margin: 30px 50px;
+  padding: 10px 20px;
+  font-weight: bold;
+  color: #333;
+  background-color: lime;
+  border: 1px solid #fff;
 }
