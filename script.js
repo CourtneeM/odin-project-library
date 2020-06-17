@@ -110,5 +110,4 @@ document.addEventListener('click', e => {
   if(e.target.textContent === "Read" || e.target.textContent === "Not Read") {
     bookActions.toggleReadStatus(e);
   }
-  console.log(myLibrary);
 })
