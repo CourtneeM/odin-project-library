@@ -47,6 +47,19 @@ function removeBook(e) {
   render();
 }
 
+function toggleReadStatus(e) {
+  for(let book in myLibrary) {
+    for(let prop in myLibrary[book]) {
+      if(myLibrary[e.target.parentElement.id][prop] === true) {
+        myLibrary[e.target.parentElement.id][prop] = false;
+      } else if(myLibrary[e.target.parentElement.id][prop] === false) {
+        myLibrary[e.target.parentElement.id][prop] = true;
+      }
+    }
+  }
+  render();
+}
+
 
 function render() {
   if(document.querySelector("#book-container").childNodes.length > 0) {
@@ -56,10 +69,19 @@ function render() {
     let div = document.createElement("div");
     let currentBook = div;
     for(let prop in myLibrary[book]) {
-      if(prop !== "id") { 
-        let p = document.createElement('p');
+      let p = document.createElement('p');
+      if(prop !== "id" && prop !== "read") { 
         p.textContent = `${myLibrary[book][prop]}`;
         currentBook.appendChild(p);
+      }
+      if(prop === "read") {
+        if(myLibrary[book][prop] === true) {
+          p.textContent = "Read";
+          currentBook.appendChild(p);
+        } else if(myLibrary[book][prop] === false) {
+          p.textContent = "Not Read";
+          currentBook.appendChild(p);
+        }
       }
       if(prop === "id") {
         currentBook.id = myLibrary[book][prop];
@@ -89,10 +111,8 @@ document.addEventListener('click', e => {
     removeBook(e);
   }
 
-  if(e.target.textContent === "true") {
-    e.target.textContent = "false";
-  } else if(e.target.textContent === "false") {
-    e.target.textContent = "true";
+  if(e.target.textContent === "Read" || e.target.textContent === "Not Read") {
+    toggleReadStatus(e);
   }
   
   console.log(e);
