@@ -3,8 +3,6 @@ const newBookForm = document.getElementById("new-book-form");
 newBookForm.style.display = "none";
 let myLibrary = [];
 
-
-
 function Book(author, title, pages, read, id) {
   this.author = author;
   this.title = title;
@@ -13,53 +11,51 @@ function Book(author, title, pages, read, id) {
   this.id = id;
 }
 
-function addBookToLibrary(e) {
-  let newBookAuthor = document.getElementById("new-book-author");
-  let newBookTitle = document.getElementById("new-book-title");
-  let newBookPages = document.getElementById("new-book-pages");
-  let newBookReadStatus = document.getElementById("new-book-read");
-  let newBook;
-  if(e.target.id === "add-book-btn") {
-    newBook = new Book(newBookAuthor.value, newBookTitle.value, newBookPages.value, newBookReadStatus.checked, (myLibrary.length));
-    newBookAuthor.value = "";
-    newBookTitle.value = "";
-    newBookPages.value = "";
-    newBookReadStatus.checked = false;
-    newBookForm.style.display = "none";
-  }
-  myLibrary.push(newBook);
-  render();
-}
-
-function updateBookId() {
-  for(let book in myLibrary) {
-    for(let prop in myLibrary[book]) {
-      if(prop === "id") {
-        myLibrary[book][prop] = book;
+let bookActions = {
+  addBookToLibrary: function(e) {
+    let newBookAuthor = document.getElementById("new-book-author");
+    let newBookTitle = document.getElementById("new-book-title");
+    let newBookPages = document.getElementById("new-book-pages");
+    let newBookReadStatus = document.getElementById("new-book-read");
+    let newBook;
+    if(e.target.id === "add-book-btn") {
+      newBook = new Book(newBookAuthor.value, newBookTitle.value, newBookPages.value, newBookReadStatus.checked, (myLibrary.length));
+      newBookAuthor.value = "";
+      newBookTitle.value = "";
+      newBookPages.value = "";
+      newBookReadStatus.checked = false;
+      newBookForm.style.display = "none";
+    }
+    myLibrary.push(newBook);
+    render();
+  },
+  updateBookId: function() {
+    for(let book in myLibrary) {
+      for(let prop in myLibrary[book]) {
+        if(prop === "id") {
+          myLibrary[book][prop] = book;
+        }
       }
     }
-  }
-}
-
-function removeBook(e) {
-  myLibrary.splice(e.target.parentElement.id, 1);
-  updateBookId();
-  render();
-}
-
-function toggleReadStatus(e) {
-  for(let book in myLibrary) {
-    for(let prop in myLibrary[book]) {
-      if(myLibrary[e.target.parentElement.id][prop] === true) {
-        myLibrary[e.target.parentElement.id][prop] = false;
-      } else if(myLibrary[e.target.parentElement.id][prop] === false) {
-        myLibrary[e.target.parentElement.id][prop] = true;
+  },
+  removeBook: function(e) {
+    myLibrary.splice(e.target.parentElement.id, 1);
+    this.updateBookId();
+    render();
+  },
+  toggleReadStatus: function(e) {
+    for(let book in myLibrary) {
+      for(let prop in myLibrary[book]) {
+        if(myLibrary[e.target.parentElement.id][prop] === true) {
+          myLibrary[e.target.parentElement.id][prop] = false;
+        } else if(myLibrary[e.target.parentElement.id][prop] === false) {
+          myLibrary[e.target.parentElement.id][prop] = true;
+        }
       }
     }
+    render();
   }
-  render();
 }
-
 
 function render() {
   if(document.querySelector("#book-container").childNodes.length > 0) {
@@ -100,7 +96,7 @@ function render() {
 
 document.addEventListener('click', e => {
   if(e.target.id === "add-book-btn") {
-    addBookToLibrary(e);
+    bookActions.addBookToLibrary(e);
   }
 
   if(e.target.id === "new-book-btn") {
@@ -108,11 +104,11 @@ document.addEventListener('click', e => {
   }
   
   if(e.target.id === "remove-book-btn") {
-    removeBook(e);
+    bookActions.removeBook(e);
   }
 
   if(e.target.textContent === "Read" || e.target.textContent === "Not Read") {
-    toggleReadStatus(e);
+    bookActions.toggleReadStatus(e);
   }
   
   console.log(e);
