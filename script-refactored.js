@@ -4,12 +4,14 @@ const newBookBtn = document.getElementById("new-book-btn");
 newBookForm.style.display = "none";
 let myLibrary = [];
 
-function Book(author, title, pages, read, id) {
-  this.author = author;
-  this.title = title;
-  this.pages = pages;
-  this.read = read;
-  this.id = id;
+class Book {
+  constructor(author, title, pages, read, id) {
+    this.author = author;
+    this.title = title;
+    this.pages = pages;
+    this.read = read;
+    this.id = id;
+  }
 }
 
 let bookActions = {
