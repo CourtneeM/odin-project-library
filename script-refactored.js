@@ -14,8 +14,9 @@ class Book {
   }
 }
 
-let bookActions = {
-  addBookToLibrary: function(e) {
+class BookActions {
+  
+  addBookToLibrary(e) {
     let newBookAuthor = document.getElementById("new-book-author");
     let newBookTitle = document.getElementById("new-book-title");
     let newBookPages = document.getElementById("new-book-pages");
@@ -32,8 +33,9 @@ let bookActions = {
     myLibrary.push(newBook);
     render.resetLibrary();
     render.displayBookInLibrary();
-  },
-  updateBookId: function() {
+  };
+
+  updateBookId() {
     for(let book in myLibrary) {
       for(let prop in myLibrary[book]) {
         if(prop === "id") {
@@ -41,14 +43,16 @@ let bookActions = {
         }
       }
     }
-  },
-  removeBook: function(e) {
+  };
+  
+  removeBook(e) {
     myLibrary.splice(e.target.parentElement.id, 1);
     this.updateBookId();
     render.resetLibrary();
     render.displayBookInLibrary();
-  },
-  toggleReadStatus: function(e) {
+  };
+
+  toggleReadStatus(e) {
     let currentBookIndex = +(e.target.parentElement.id);
     if(myLibrary[currentBookIndex].read === true) {
       myLibrary[currentBookIndex].read = false;
@@ -57,7 +61,8 @@ let bookActions = {
     }
     render.resetLibrary();
     render.displayBookInLibrary();
-  }
+  };
+
 }
 
 class Render {
@@ -125,3 +130,4 @@ document.addEventListener('click', e => {
 })
 
 let render = new Render();
+let bookActions = new BookActions();
