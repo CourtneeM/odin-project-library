@@ -14,9 +14,8 @@ class Book {
   }
 }
 
-class BookActions {
-  
-  addBookToLibrary(e) {
+const bookActions = (function() {
+  addBookToLibrary = function(e) {
     let newBookAuthor = document.getElementById("new-book-author");
     let newBookTitle = document.getElementById("new-book-title");
     let newBookPages = document.getElementById("new-book-pages");
@@ -34,7 +33,7 @@ class BookActions {
     render.renderLibrary();
   };
 
-  updateBookId() {
+  updateBookId = function() {
     for(let book in myLibrary) {
       for(let prop in myLibrary[book]) {
         if(prop === "id") {
@@ -44,13 +43,13 @@ class BookActions {
     }
   };
   
-  removeBook(e) {
+  removeBook = function(e) {
     myLibrary.splice(e.target.parentElement.id, 1);
     this.updateBookId();
     render.renderLibrary();
   };
 
-  toggleReadStatus(e) {
+  toggleReadStatus = function(e) {
     let currentBookIndex = +(e.target.parentElement.id);
     if(myLibrary[currentBookIndex].read === true) {
       myLibrary[currentBookIndex].read = false;
@@ -60,17 +59,18 @@ class BookActions {
     render.renderLibrary();
   };
 
-}
+  return { addBookToLibrary, updateBookId, removeBook, toggleReadStatus };
 
-class Render {
+})();
 
-  resetLibrary() {
+const render = (function() {
+  function resetLibrary() {
     if(document.querySelector("#book-container").childNodes.length > 0) {
       bookContainer.querySelectorAll("*").forEach(n => n.remove());
     }
   };
 
-  displayBookInLibrary() {
+  function displayBookInLibrary() {
     for(let book in myLibrary) {
       let div = document.createElement("div");
       let currentBook = div;
@@ -103,34 +103,44 @@ class Render {
     }
   };
 
-  renderLibrary() {
-    this.resetLibrary();
-    this.displayBookInLibrary();
+  renderLibrary = function() {
+    resetLibrary();
+    displayBookInLibrary();
   };
 
-}
+  return { renderLibrary }
 
+})();
 
-document.addEventListener('click', e => {
-  if(e.target.id === "add-book-btn") {
-    bookActions.addBookToLibrary(e);
-    newBookBtn.style.display = "block";
-  }
-  
-  if(e.target.id === "remove-book-btn") {
-    bookActions.removeBook(e);
-  }
+(function eventListners() {
+  (function addBookToLibrary() {
+    const addBookBtn = document.getElementById('add-book-btn');
+    addBookBtn.addEventListener('click', e => {
+      bookActions.addBookToLibrary(e);
+      newBookBtn.style.display = "block";
+    });
+  }());
 
-  if(e.target.textContent === "Read" || e.target.textContent === "Not Read") {
-    bookActions.toggleReadStatus(e);
-  }
+  (function removeBookFromLibrary() {
+    document.addEventListener('click', e => { 
+      if(e.target.id === 'remove-book-btn') {
+        bookActions.removeBook(e); 
+      }
+    })
+  }());
 
-  if(e.target.id === "new-book-btn") {
-    newBookForm.style.display = "block";
-    newBookBtn.style.display = "none";
-  }
+  (function toggleReadStatus() {
+    document.addEventListener('click', e => {
+      if(e.target.textContent === "Read" || e.target.textContent === "Not Read") {
+        bookActions.toggleReadStatus(e);
+      }
+    });
+  }());
 
-})
-
-let render = new Render();
-let bookActions = new BookActions();
+  (function newBookFormBtn() {
+    newBookBtn.addEventListener('click', e => {
+      newBookForm.style.display = "block";
+      newBookBtn.style.display = "none";
+    })
+  }());
+})();
