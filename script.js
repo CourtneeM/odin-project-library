@@ -21,6 +21,15 @@ const bookActions = (function() {
     let newBookPages = document.getElementById("new-book-pages");
     let newBookReadStatus = document.getElementById("new-book-read");
     let newBook;
+
+    if(!newBookAuthor.checkValidity() || !newBookTitle.checkValidity() || !newBookPages.checkValidity()) {
+      newBookForm.style.display = 'none';
+      newBookAuthor.value = "";
+      newBookTitle.value = "";
+      newBookPages.value = "";
+      return;
+    }
+
     if(e.target.id === "add-book-btn") {
       newBook = new Book(newBookAuthor.value, newBookTitle.value, newBookPages.value, newBookReadStatus.checked, (myLibrary.length));
       newBookAuthor.value = "";
